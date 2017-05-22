@@ -1,18 +1,21 @@
 (ns deep-matrix-clojure.core
   (:gen-class))
 
+(use 'incanter.io)
 (import java.lang.Math)
 (import java.util.Random)
 
 
-(defn transpose [A] (apply mapv vector A))
+(defn transpose [A]
+  (apply mapv vector A))
 
-(defn row [A i] (nth A i))
+(defn row [A i]
+  (nth A i))
 
-(defn column [A i] (transpose (vector (nth (transpose A) i))))
+(defn column [A i]
+  (transpose (vector (nth (transpose A) i))))
 
-(defn random
-  [m n]
+(defn random [m n]
   (loop [counter 0
          A []]
     (if (= m counter)
@@ -20,10 +23,10 @@
       (recur (inc counter) 
              (conj A (vec (repeatedly n #(.nextGaussian (Random.)))))))))
 
-(defn scalar-row [n i scalar] (assoc-in (vec (repeat n 0)) [i] scalar))
+(defn scalar-row [n i scalar]
+  (assoc-in (vec (repeat n 0)) [i] scalar))
 
-(defn diagonal
-  [n scalar]
+(defn diagonal [n scalar]
   (loop [counter 0
          A []]
     (if (= n counter)
@@ -31,8 +34,7 @@
       (recur (inc counter)
              (conj A (scalar-row n counter scalar))))))
 
-(defn operate
-  [operator A B]
+(defn operate [operator A B]
   (loop [counter 0
          C []]
     (if (= (count A) counter)
@@ -40,23 +42,26 @@
       (recur (inc counter) 
              (conj C (mapv operator (nth A counter) (nth B counter)))))))
 
-(defn dot-product [x y] (reduce + (map * x y)))
+(defn dot-product [x y]
+  (reduce + (map * x y)))
 
-(defn times
-  [A B]
+(defn times [A B]
   (let [row-mult (fn [C x] (mapv (partial dot-product x) (transpose C)))]
     (mapv (partial row-mult B) A)))
 
-(defn exp [x] (Math/exp x))
+(defn exp [x]
+  (Math/exp x))
 
-(defn exp-matrix [A] (mapv (partial mapv exp) A))
+(defn exp-matrix [A]
+  (mapv (partial mapv exp) A))
 
-(defn row-sum [x] (apply + x))
+(defn row-sum [x]
+  (apply + x))
 
-(defn matrix-sum [A] (row-sum (map row-sum A)))
+(defn matrix-sum [A]
+  (row-sum (map row-sum A)))
 
-(defn softmax
-  [A]
+(defn softmax [A]
   (let [B (exp-matrix A)
         column-sum (matrix-sum B)]
     (loop [counter 0
@@ -66,11 +71,14 @@
         (recur (inc counter)
                (conj C (mapv #(/ % column-sum) (nth B counter))))))))
 
-(defn pos-only [x] (if (pos? x) x 0))
+(defn pos-only [x]
+  (if (pos? x) x 0))
 
-(defn relu [A] (mapv (partial mapv pos-only) A))
+(defn relu [A]
+  (mapv (partial mapv pos-only) A))
 
-(defn nextfloat-row [n] (repeatedly n #(.nextFloat (Random.))))
+(defn nextfloat-row [n]
+  (repeatedly n #(.nextFloat (Random.))))
 
 (defn dropout
   [A probability]
@@ -85,4 +93,9 @@
                (conj B (mapv * (nth A counter)
                                (mapv over-probability (nextfloat-row n)))))))))
 
-(defn shape [A] [(count A) (count (transpose A))])
+(defn shape [A]
+  [(count A) (count (transpose A))])
+
+(defn -main [& args]
+  (def data (read-dataset "data.csv" :header true))
+  (println data))
