@@ -1,10 +1,6 @@
-(ns deep-matrix-clojure.core
-  (:gen-class))
-
-(use 'incanter.io)
-(import java.lang.Math)
-(import java.util.Random)
-
+(ns matrix
+  (:import (java.lang Math)
+           (java.util Random)))
 
 (defn transpose [A]
   (apply mapv vector A))
@@ -24,7 +20,7 @@
              (conj A (vec (repeatedly n #(.nextGaussian (Random.)))))))))
 
 (defn scalar-row [n i scalar]
-  (assoc-in (vec (repeat n 0)) [i] scalar))
+  (assoc (vec (repeat n 0)) i scalar))
 
 (defn diagonal [n scalar]
   (loop [counter 0
@@ -95,7 +91,3 @@
 
 (defn shape [A]
   [(count A) (count (transpose A))])
-
-(defn -main [& args]
-  (def data (read-dataset "data.csv" :header true))
-  (println data))

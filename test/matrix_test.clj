@@ -1,6 +1,6 @@
-(ns deep-matrix-clojure.core-test
+(ns matrix-test
   (:require [clojure.test :refer :all]
-            [deep-matrix-clojure.core :refer :all]))
+            [matrix :refer :all]))
 
 (deftest transpose-test
   (testing "matrix transpose operation"
