@@ -39,3 +39,8 @@
         train-count (* row-count (- 1 test-fraction))]
     [(subvec X 0 train-count) (subvec y 0 train-count)
      (subvec X train-count row-count) (subvec y train-count row-count)]))
+
+(defn process-data [file-path]
+  (let [raw-data (read-csv file-path)
+        [y X] raw-data]
+    (split (scale X) y 0.2)))

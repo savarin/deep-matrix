@@ -26,20 +26,20 @@
 (defn run [X y learning-rate dropout-rate]
   (let [row-count (count X)
         column-count (count (first X))
-        weights (matrix/times (matrix/random 2 column-count)
+        W (matrix/times (matrix/random 2 column-count)
                         (matrix/diagonal column-count 0.001))
-        bias (matrix/times (matrix/random 2 1)
+        b (matrix/times (matrix/random 2 1)
                         (matrix/diagonal 1 0.001))]
     (loop [counter 0
-           W weights
-           b bias]
+           weights W
+           bias b]
       (if (= row-count counter)
-        [W b]
+        [weights bias]
         (let [label (nth y counter)
               column-data [(nth X counter)]
               row-data (matrix/transpose column-data)
-              result-nth (result row-data label W b dropout-rate)
+              result-nth (result row-data label weights bias dropout-rate)
               gradient-nth (gradient result-nth column-data)]
           (recur (inc counter)
-                 (weights-update W gradient-nth learning-rate)
-                 b))))))
+                 (weights-update weights gradient-nth learning-rate)
+                 bias))))))
