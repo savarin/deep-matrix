@@ -1,6 +1,8 @@
 (ns main
   (:require [matrix]
-            [preprocessors]))
+            [preprocessors]
+            (tesser
+              [core :as t]
+              [math :as m])))
 
-(defn -main [& args]
-  (println (preprocessors/read-csv "head.csv")))
+(defn -main [& args])
