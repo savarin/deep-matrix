@@ -3,6 +3,7 @@
 
 (defn probability-row [row W b]
   (->> (matrix/operate + (matrix/times W (matrix/transpose [row])) b)
+       matrix/relu
        matrix/softmax
        matrix/transpose
        first))

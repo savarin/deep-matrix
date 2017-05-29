@@ -8,8 +8,8 @@
 
 (defn result [row-data label W b dropout-rate]
   (->> (matrix/operate + (matrix/times W row-data) b)
-       ; matrix/relu
-       ; (#(matrix/dropout % dropout-rate))
+       matrix/relu
+       (#(matrix/dropout % dropout-rate))
        (#(matrix/operate - % (label-onehot label)))))
 
 (defn gradient [result column-data]

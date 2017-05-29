@@ -2,15 +2,6 @@
   (:import (java.lang Math)
            (java.util Random)))
 
-(defn transpose [A]
-  (apply mapv vector A))
-
-(defn row [A i]
-  (nth A i))
-
-(defn column [A i]
-  (transpose (vector (nth (transpose A) i))))
-
 (defn random [m n]
   (loop [counter 0
          A []]
@@ -41,6 +32,9 @@
 (defn dot-product [x y]
   (reduce + (map * x y)))
 
+(defn transpose [A]
+  (apply mapv vector A))
+
 (defn times [A B]
   (let [row-mult (fn [C x] (mapv (partial dot-product x) (transpose C)))]
     (mapv (partial row-mult B) A)))
@@ -51,11 +45,8 @@
 (defn exp-matrix [A]
   (mapv (partial mapv exp) A))
 
-(defn row-sum [x]
-  (apply + x))
-
 (defn matrix-sum [A]
-  (row-sum (map row-sum A)))
+  (apply + (flatten A)))
 
 (defn softmax [A]
   (let [B (exp-matrix A)
