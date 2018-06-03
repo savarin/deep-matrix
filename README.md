@@ -1,5 +1,7 @@
 # Predictive modeling with neural networks
 
+*This project is a Clojure version of the final project for [Berkeley's Java: Discovering Its Power](https://extension.berkeley.edu/search/publicCourseSearchDetails.do?method=load&courseId=40964) course. For the version in Java, please visit [Deep Matrix](https://github.com/savarin/deep-matrix-berkeley).*
+
 ## Introduction
 
 The goal of this project is to develop a neural network-based predictive model from scratch.
